@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Updated version title -->
-    <title>UW assessment tool (v2.8.627)</title>
+    <title>UW assessment tool (v2.8.628)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -5480,7 +5480,7 @@ ${hnwFinancially || ''}`;
                                         <div>
                                             <label className="text-xs font-bold text-slate-500">付款方式</label>
                                             <select value={paymentMethod} onChange={(e) =>setPaymentMethod(e.target.value)} className="w-full border rounded p-1.5 text-sm">
-                                                <option value="Bank Transfer">Bank Transfer</option><option value="Direct Deposit">Direct Deposit</option><option value="Bank Draft / Cashier Order">Bank Draft / Cashier Order</option><option value="Credit Card">Credit Card</option><option value="Bravo Payment">Bravo Payment</option><option value="Online Banking">Online Banking</option><option value="TT">TT</option><option value="PPS / FPS">PPS / FPS</option><option value="Cheque">Cheque</option>
+                                                <option value="Bank Transfer">Bank Transfer</option><option value="Direct Deposit">Direct Deposit</option><option value="Bank Draft / Cashier Order">Bank Draft / Cashier Order</option><option value="Credit Card">Credit Card</option><option value="Credit Card Form">Credit Card Form</option><option value="Bravo Payment">Bravo Payment</option><option value="Online Banking">Online Banking</option><option value="TT">TT</option><option value="PPS / FPS">PPS / FPS</option><option value="Cheque">Cheque</option>
                                             </select>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <input type="checkbox" checked={unpaidPremium} onChange={(e) => setUnpaidPremium(e.target.checked)} className="rounded text-blue-600" />
@@ -5588,6 +5588,25 @@ ${hnwFinancially || ''}`;
              * centralizes the string construction logic so that both the normal
              * copy function and the long version can reuse the same summary.
              */
+            const getPaymentSummaryLine = () => {
+                if (!policyData) return '';
+                if (policyData.unpaidPremium) return 'no';
+                const payDate = policyData.paymentDate ? formatDateVerbose(policyData.paymentDate) : '';
+                if (policyData.paymentMethod === 'Credit Card Form') {
+                    const signer = policyData.paymentPayor || '';
+                    const parts = ['Credit Card signed'];
+                    if (signer) parts.push(`by ${signer}`);
+                    if (payDate) parts.push(`on ${payDate}`);
+                    return parts.join(' ').trim();
+                }
+                let line = '';
+                if (policyData.paymentCurrency && policyData.paymentAmount) line = `${policyData.paymentCurrency} ${Number(policyData.paymentAmount).toLocaleString()}`;
+                if (line) line += ` paid by ${policyData.paymentPayor || ''}`;
+                if (policyData.paymentMethod) line += ` via ${policyData.paymentMethod}`;
+                if (payDate) line += ` on ${payDate}`;
+                return line || '';
+            };
+
             const buildSummaryLines = () => {
                 if (!policyData) return [];
                 const lines = [];
@@ -5900,16 +5919,7 @@ const showMed = (isPHNotSame && !isLifeOrCI)
                 }
                 lines.push('--------');
                 // Payment section
-                const payDate2 = policyData.paymentDate ? formatDateVerbose(policyData.paymentDate) : '';
-                let paymentLine = '';
-                if (policyData.unpaidPremium) {
-                    paymentLine = 'no';
-                } else {
-                    if (policyData.paymentCurrency && policyData.paymentAmount) paymentLine = `${policyData.paymentCurrency} ${Number(policyData.paymentAmount).toLocaleString()}`;
-                    if (paymentLine) paymentLine += ` paid by ${policyData.paymentPayor || ''}`;
-                    if (policyData.paymentMethod) paymentLine += ` via ${policyData.paymentMethod}`;
-                    if (payDate2) paymentLine += ` on ${payDate2}`;
-                }
+                const paymentLine = getPaymentSummaryLine();
                 lines.push(`Payment: ${paymentLine.trim()}`);
                 if (policyData.payMode === 'Prepay' && policyData.pdfAmount) {
                     lines.push(`PDF amount: ${policyData.curr || ''} ${policyData.pdfAmount}`);
@@ -6560,16 +6570,7 @@ const shouldShowMed = () => {
                         ) : null))}
                         <div>
                             <span className="font-bold">12. Payment:</span>{' '}
-                            {(() => {
-                                if (policyData.unpaidPremium) return 'no';
-                                const payDate = policyData.paymentDate ? formatDateVerbose(policyData.paymentDate) : '';
-                                let line = '';
-                                if (policyData.paymentCurrency && policyData.paymentAmount) line = `${policyData.paymentCurrency} ${Number(policyData.paymentAmount).toLocaleString()}`;
-                                if (line) line += ` paid by ${policyData.paymentPayor || ''}`;
-                                if (policyData.paymentMethod) line += ` via ${policyData.paymentMethod}`;
-                                if (payDate) line += ` on ${payDate}`;
-                                return line || '';
-                            })()}
+                            {getPaymentSummaryLine()}
                         </div>
                         {/* Trust Beneficiary display moved under point 5 (Applying) */}
                         <div>
@@ -6902,9 +6903,18 @@ const shouldShowMed = () => {
         
         /* ========= Versioning & Update Log ========= */
         // Updated version constant to reflect latest enhancements
-        const CURRENT_VERSION = "v2.8.627";
+        const CURRENT_VERSION = "v2.8.628";
         const UPDATE_LOG_PASSWORD = "admin123";
         const versionHistory = [
+{
+    version: "v2.8.628",
+    date: "31 Jan 2026",
+    type: "Patch Update",
+    changes: [
+        "Payment Info: Added a 'Credit Card Form' payment method option.",
+        "Case Summary: When 'Credit Card Form' is selected, show 'Credit Card signed by {payor} on {date}' in preview and copy output."
+    ]
+},
 {
     version: "v2.8.627",
     date: "30 Jan 2026",
