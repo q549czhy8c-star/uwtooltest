@@ -4445,6 +4445,12 @@ ${hnwFinancially || ''}`;
                 return null;
             }, [bmiResult]);
 
+            const flyToBuyAmlRequired = useMemo(() => {
+                if (!phResidency) return false;
+                const allowed = new Set(['HK', 'CN', 'TW', 'MO']);
+                return !allowed.has(phResidency);
+            }, [phResidency]);
+
             const birthdayAlert = useMemo(() => {
                 if (prodType !== 'GIO' && prodType !== 'Annuity') return null;
                 const refDateStr = proposalDate || new Date().toISOString().split('T')[0];
@@ -4591,6 +4597,9 @@ ${hnwFinancially || ''}`;
                 if (birthdayAlert) {
                     msgs.push({ type: 'warning', text: birthdayAlert.text, icon: <CalendarClock size={16}/> });
                 }
+                if (flyToBuyAmlRequired) {
+                    msgs.push({ type: 'warning', text: 'please complete AML checklist for fly to buy client' });
+                }
                 const datesToCheck = [];
                 if (proposalDate) datesToCheck.push({ label: '印刷日期', date: new Date(proposalDate) });
                 if (signingDate) datesToCheck.push({ label: '簽署日期', date: new Date(signingDate) });
@@ -4650,7 +4659,7 @@ ${hnwFinancially || ''}`;
                     }
                 }
                 return msgs;
-            }, [proposalDate, signingDate, applicationSigningDate, fnaSigningDate, phResidency, phArrivalDate, phExpiryDate, phIfsDate, appType, premAmount, curr, pdfAmount, paymentCurrency, birthdayAlert]);
+            }, [proposalDate, signingDate, applicationSigningDate, fnaSigningDate, phResidency, phArrivalDate, phExpiryDate, phIfsDate, appType, premAmount, curr, pdfAmount, paymentCurrency, birthdayAlert, flyToBuyAmlRequired]);
 
             // ==========================================
             // Jumbo Case (大額保單) Logic
