@@ -5624,16 +5624,20 @@ ${hnwFinancially || ''}`;
                 return line || '';
             };
 
-            const getNiceActimizeLine = () => {
-                if (policyData?.niceActimize === 'No') return 'NiceActimize checked: no hit';
-                if (policyData?.niceActimize === 'false') return 'NiceActimize checked: agree false hit';
-                if (policyData?.niceActimize === 'with possible') return 'NiceActimize checked:';
-                return '';
+            const getNiceActimizeLines = () => {
+                if (policyData?.niceActimize === 'No') return ['NiceActimize checked:', 'no hit'];
+                if (policyData?.niceActimize === 'false') return ['NiceActimize checked:', 'All false hit, AS400 & Actimize updated'];
+                if (policyData?.niceActimize === 'with possible') return ['NiceActimize checked:'];
+                return [];
             };
 
             const buildSummaryLines = () => {
                 if (!policyData) return [];
                 const lines = [];
+                const niceActimizeLines = getNiceActimizeLines();
+                if (niceActimizeLines.length) {
+                    lines.push(...niceActimizeLines);
+                }
                 const pdfSuffixStr = (policyData.payMode === 'Prepay' && policyData.pdfAmount)
                     ? ` (PDF amount: ${formatMoney(Number(policyData.pdfAmount), policyData.curr || 'HKD')})`
                     : '';
@@ -5947,10 +5951,6 @@ const showMed = (isPHNotSame && !isLifeOrCI)
                 lines.push(`Payment: ${paymentLine.trim()}`);
                 if (policyData.payMode === 'Prepay' && policyData.pdfAmount) {
                     lines.push(`PDF amount: ${policyData.curr || ''} ${policyData.pdfAmount}`);
-                }
-                const niceActimizeLine = getNiceActimizeLine();
-                if (niceActimizeLine) {
-                    lines.push(niceActimizeLine);
                 }
                 lines.push('--------');
                 // Issue UN and PD
@@ -6344,6 +6344,15 @@ const shouldShowMed = () => {
                         <div className="text-center text-sm text-slate-500">No data available</div>
                     ) : (
                     <div className="space-y-4 text-sm text-slate-800">
+                        {getNiceActimizeLines().length > 0 && (
+                            <div>
+                                {getNiceActimizeLines().map((line, index) => (
+                                    <div key={`nice-actimize-${index}`} className={index === 0 ? 'font-bold' : 'pl-2'}>
+                                        {line}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                         {/* [UPDATE] Show residency for all non-HK residents */}
                         {policyData && getResidencyDisplay() && (
                             <div><span className="font-bold">{getResidencyDisplay()} resident</span></div>
@@ -6608,12 +6617,6 @@ const shouldShowMed = () => {
                             <span className="font-bold">12. Payment:</span>{' '}
                             {getPaymentSummaryLine()}
                         </div>
-                        {getNiceActimizeLine() && (
-                            <div>
-                                <span className="font-bold">13. NiceActimize:</span>{' '}
-                                <span className="pl-2">{getNiceActimizeLine()}</span>
-                            </div>
-                        )}
                         {/* Trust Beneficiary display moved under point 5 (Applying) */}
                         <div>
                             <span className="font-bold">14. Issue UN:</span>
