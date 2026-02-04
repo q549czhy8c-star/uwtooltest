@@ -3744,6 +3744,7 @@ const HK_HOLIDAYS_2025_2026 = [
             const [isEverestBroker, setIsEverestBroker] = useState(false);
                         const [trustReasonCompany, setTrustReasonCompany] = useState('Pacific');
                         const [trustDeclaration, setTrustDeclaration] = useState('No');
+            const [niceActimize, setNiceActimize] = useState('');
 const [addressProofType, setAddressProofType] = useState('');
             const [height, setHeight] = useState('');
             const [weight, setWeight] = useState('');
@@ -3868,6 +3869,7 @@ const [fnaP3Q6, setFnaP3Q6] = useState("");   // single-select (A - G)
                         if (s.appType !== undefined) setAppType(s.appType);
                         if (s.trustReasonCompany !== undefined) setTrustReasonCompany(s.trustReasonCompany);
                         if (s.trustDeclaration !== undefined) setTrustDeclaration(s.trustDeclaration);
+                        if (s.niceActimize !== undefined) setNiceActimize(s.niceActimize);
                         if (s.addressProofType !== undefined) setAddressProofType(s.addressProofType);
                         if (s.height !== undefined) setHeight(s.height);
                         if (s.weight !== undefined) setWeight(s.weight);
@@ -4059,6 +4061,7 @@ const [fnaP3Q6, setFnaP3Q6] = useState("");   // single-select (A - G)
                         unpaidPremium,
                         reasonPurchaseHK,
                         otherInsurances,
+                        niceActimize,
                         // Premium Financing (PF) fields - persisted for export/import
                         isPremiumFinancing,
                         pfLoanAmount,
@@ -4088,7 +4091,7 @@ const [fnaP3Q6, setFnaP3Q6] = useState("");   // single-select (A - G)
                     console.error('Failed to persist Policy Input full state', err);
                 }
             }, [
-                appType, trustReasonCompany, trustDeclaration, addressProofType, height, weight, isDateBack, isSamePerson,
+                appType, trustReasonCompany, trustDeclaration, niceActimize, addressProofType, height, weight, isDateBack, isSamePerson,
                 proposalDate, signingDate, applicationSigningDate, fnaSigningDate,
                 phDob, phGender, phSmoker, phResidency, phOtherCountry, phArrivalDate, phExpiryDate, phIfsDate,
                 insDob, insGender, insSmoker, insResidency,
@@ -4098,7 +4101,7 @@ const [fnaP3Q6, setFnaP3Q6] = useState("");   // single-select (A - G)
                 fnaRetireAge, fnaDisposableIncome, fnaIncomePercent, fnaLiquidAssets, fnaAssetPercent, fnaSof, fnaSow, noFna,
                 paymentDate, paymentCurrency, paymentAmount, paymentPayor, paymentMethod, pdfAmount,
                 commissionSpreading, piInvestorType, piScenarioKey,
-                trustBeneficiaries, unpaidPremium, reasonPurchaseHK, otherInsurances,
+                trustBeneficiaries, unpaidPremium, reasonPurchaseHK, otherInsurances, niceActimize,
                 // dependencies for PF fields
                 isPremiumFinancing, pfLoanAmount, pfLoanRate, pfLoanTenor, pfRepaymentAmount,
                 // HNW fields dependencies
@@ -4766,6 +4769,7 @@ ${hnwFinancially || ''}`;
                         phResidency, phOtherCountry, reasonPurchaseHK,
                         unpaidPremium, trustBeneficiaries,
                         trustDeclaration,
+                        niceActimize,
                         noFna, // [UPDATE Req 8] Save noFna state
                         // Premium Financing details for case summary display
                         isPremiumFinancing,
@@ -4782,12 +4786,12 @@ ${hnwFinancially || ''}`;
             }, [policyHydrated, phArrivalDate, fnaSigningDate, proposalDate, applicationSigningDate, signingDate, addressProofType, isSamePerson, phAge, phGender, phSmoker, phDob, insAge, insGender, insSmoker, insDob, planName, sumAssured, curr, prodType, otherInsurances, height, weight, medicalReq, financialReq, returnCheck, monthlyIncome, occupationStatus, position, employer, location, lifeCiEmployerToggle, bizNature, sofWealthSupplementType, premAmount, payMode, yearTerm, paymentDate, paymentCurrency, paymentAmount, paymentPayor, paymentMethod,
                 // Commission Spreading (Professional Investor - PI)
                 commissionSpreading, piInvestorType, piScenarioKey,
-                isDateBack, birthdayAlert, appType, trustDeclaration, pdfAmount, phResidency, phOtherCountry, reasonPurchaseHK, unpaidPremium, trustBeneficiaries, noFna,
+                isDateBack, birthdayAlert, appType, trustDeclaration, niceActimize, pdfAmount, phResidency, phOtherCountry, reasonPurchaseHK, unpaidPremium, trustBeneficiaries, noFna,
                 // Premium Financing dependencies
                 isPremiumFinancing, pfLoanAmount, pfLoanRate, pfLoanTenor, pfRepaymentAmount]);
 
             const handleResetPolicyInfo = () => {
-                setAppType('Individual'); setIsEverestBroker(false); setTrustDeclaration('No'); setAddressProofType(''); setHeight(''); setWeight(''); setIsSamePerson(true); setIsDateBack(false);
+                setAppType('Individual'); setIsEverestBroker(false); setTrustDeclaration('No'); setNiceActimize(''); setAddressProofType(''); setHeight(''); setWeight(''); setIsSamePerson(true); setIsDateBack(false);
                 setProposalDate(""); setSigningDate(""); setApplicationSigningDate(""); setFnaSigningDate("");
                 setPhDob(""); setPhGender("M"); setPhSmoker("N"); setPhResidency("HK"); setPhOtherCountry(""); setPhArrivalDate(""); setPhExpiryDate(""); setPhIfsDate("");
                 setInsDob(""); setInsGender("M"); setInsSmoker("N"); setInsResidency("HK");
@@ -4824,6 +4828,19 @@ ${hnwFinancially || ''}`;
                                     <option value="Individual">Individual (個人)</option>
                                     <option value="Trust">Trust (信託)</option>
                                 </select>
+                                <div className="flex items-center gap-2 ml-4">
+                                    <label className="text-xs font-bold text-slate-700">NiceActimize:</label>
+                                    <select
+                                        value={niceActimize}
+                                        onChange={(e) => setNiceActimize(e.target.value)}
+                                        className="border border-slate-300 rounded-md p-1.5 text-xs bg-white focus:border-blue-500 outline-none"
+                                    >
+                                        <option value="">Blank</option>
+                                        <option value="No">No</option>
+                                        <option value="false">false</option>
+                                        <option value="with possible">with possible</option>
+                                    </select>
+                                </div>
                                 {appType === 'Trust' && (
                                     <div className="flex items-center gap-2 ml-4">
                                         <select
@@ -5607,6 +5624,13 @@ ${hnwFinancially || ''}`;
                 return line || '';
             };
 
+            const getNiceActimizeLine = () => {
+                if (policyData?.niceActimize === 'No') return 'NiceActimize checked: no hit';
+                if (policyData?.niceActimize === 'false') return 'NiceActimize checked: agree false hit';
+                if (policyData?.niceActimize === 'with possible') return 'NiceActimize checked:';
+                return '';
+            };
+
             const buildSummaryLines = () => {
                 if (!policyData) return [];
                 const lines = [];
@@ -5924,6 +5948,10 @@ const showMed = (isPHNotSame && !isLifeOrCI)
                 if (policyData.payMode === 'Prepay' && policyData.pdfAmount) {
                     lines.push(`PDF amount: ${policyData.curr || ''} ${policyData.pdfAmount}`);
                 }
+                const niceActimizeLine = getNiceActimizeLine();
+                if (niceActimizeLine) {
+                    lines.push(niceActimizeLine);
+                }
                 lines.push('--------');
                 // Issue UN and PD
                 lines.push(`Issue UN: ${issueUN}`);
@@ -6226,6 +6254,10 @@ const shouldShowMed = () => {
 
             const copyAll = () => {
                 if (!policyData) return;
+                if (!policyData?.niceActimize) {
+                    window.alert('Please select NiceActimize option before copying case summary.');
+                    return;
+                }
                 const lines = buildSummaryLines();
                 const text = lines.join('\n');
                 copyToClipboard(text);
@@ -6234,6 +6266,10 @@ const shouldShowMed = () => {
             // Copy function that includes detailed calculation formulas for Medical and Financial sections
             const copyAllLong = () => {
                 if (!policyData) return;
+                if (!policyData?.niceActimize) {
+                    window.alert('Please select NiceActimize option before copying case summary.');
+                    return;
+                }
                 const lines = buildSummaryLines();
                 // Compute Medical formula
                 let medFormula = '';
@@ -6572,13 +6608,19 @@ const shouldShowMed = () => {
                             <span className="font-bold">12. Payment:</span>{' '}
                             {getPaymentSummaryLine()}
                         </div>
+                        {getNiceActimizeLine() && (
+                            <div>
+                                <span className="font-bold">13. NiceActimize:</span>{' '}
+                                <span className="pl-2">{getNiceActimizeLine()}</span>
+                            </div>
+                        )}
                         {/* Trust Beneficiary display moved under point 5 (Applying) */}
                         <div>
-                            <span className="font-bold">13. Issue UN:</span>
+                            <span className="font-bold">14. Issue UN:</span>
                             <textarea value={issueUN} onChange={(e) => setIssueUN(e.target.value)} className="w-full border rounded p-2 text-xs mt-1"></textarea>
                             <button onClick={copyIssueMessage} className="mt-1 text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Copy Issue UN</button>
                         </div>
-                        <div><span className="font-bold">14. *PD:</span> {getPdDate()}</div>
+                        <div><span className="font-bold">15. *PD:</span> {getPdDate()}</div>
                     </div>
                     )}
                 </div>
