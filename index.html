@@ -4447,9 +4447,23 @@ ${hnwFinancially || ''}`;
 
             const flyToBuyAmlRequired = useMemo(() => {
                 if (!phResidency) return false;
-                const allowed = new Set(['HK', 'CN', 'TW', 'MO']);
-                return !allowed.has(phResidency);
-            }, [phResidency]);
+                const allowedCodes = new Set(['HK', 'CN', 'TW', 'MO']);
+                if (allowedCodes.has(phResidency)) return false;
+                if (phResidency === 'Other') {
+                    const normalized = String(phOtherCountry || '').trim().toLowerCase();
+                    const allowedNames = new Set([
+                        'hong kong',
+                        'hong kong sar',
+                        'china',
+                        'taiwan',
+                        'taiwan (province of china)',
+                        'macau',
+                        'macao'
+                    ]);
+                    return !allowedNames.has(normalized);
+                }
+                return true;
+            }, [phResidency, phOtherCountry]);
 
             const birthdayAlert = useMemo(() => {
                 if (prodType !== 'GIO' && prodType !== 'Annuity') return null;
