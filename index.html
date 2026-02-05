@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Updated version title -->
-    <title>UW assessment tool (v2.8.629)</title>
+    <title>UW assessment tool (v2.8.630)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -6996,9 +6996,19 @@ const shouldShowMed = () => {
         
         /* ========= Versioning & Update Log ========= */
         // Updated version constant to reflect latest enhancements
-        const CURRENT_VERSION = "v2.8.629";
+        const CURRENT_VERSION = "v2.8.630";
         const UPDATE_LOG_PASSWORD = "admin123";
         const versionHistory = [
+{
+    version: "v2.8.630",
+    date: "05 Feb 2026",
+    type: "Patch Update",
+    changes: [
+        "Other Insurance Coverage: Added a per-row 'PF in Generali' checkbox.",
+        "TSA(Med) / Medical Requirement total SA now includes rows marked 'PF in Generali' (even if status is not Applying).",
+        "Added inline reminder for manual multiplier handling: LionPatron x1.5 and LionGuardian Beyond x1.3."
+    ]
+},
 {
     version: "v2.8.629",
     date: "01 Feb 2026",
