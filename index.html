@@ -2540,7 +2540,7 @@ const HK_HOLIDAYS_2025_2026 = [
             );
         };
         // --- Medical Logic ---
-        const getMedicalReq = (planName, age, sa, currency) => {
+        const getMedicalReq = (planName, age, sa, currency, applyMultiplier = true) => {
             if (!planName || !sa) return null;
             const product = PRODUCT_DB.find(p => p.name === planName);
             if (!product || !product.ruleType) return null;
@@ -2558,7 +2558,7 @@ const HK_HOLIDAYS_2025_2026 = [
             }
 
             let checkSA = saUSD;
-            if (product.multiplier) {
+            if (applyMultiplier && product.multiplier) {
                 checkSA = saUSD * product.multiplier;
             }
 
@@ -4584,8 +4584,11 @@ ${hnwFinancially || ''}`;
                         }
                     });
                 }
-                const totalSA = baseSA + otherApplying;
-                return getMedicalReq(planName, checkAge, totalSA, curr);
+                const product = PRODUCT_DB.find(p => p.name === planName);
+                const multiplier = product?.multiplier ? Number(product.multiplier) : 1;
+                const adjustedBaseSA = baseSA * multiplier;
+                const totalSA = adjustedBaseSA + otherApplying;
+                return getMedicalReq(planName, checkAge, totalSA, curr, false);
             }, [planName, phAge, insAge, isSamePerson, sumAssured, curr, prodType, otherInsurances]);
 
             const financialReq = useMemo(() => {
