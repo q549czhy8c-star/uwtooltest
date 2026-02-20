@@ -2443,19 +2443,19 @@ const HK_HOLIDAYS_2025_2026 = [
 
             { name: "LionAchiever Elite", type: "GIO", q1: "A (Optional), C (Optional), D (Optional), E, E(iii)", q2: "A", q3: "E - G", q6: "A - F", ruleType: "GIO" },
             // Life
-            { name: "Generali Supreme Gold", type: "Life", q1: "A", q2: "C", q3: "B - F", q6: "≥ protection period", ruleType: "LIFE" },
-            { name: "LionPainter Flexi", type: "Life", q1: "A, D", q2: "C", q3: "B - C (10 Years PPT); B - D (11 - 15 Years PPT); B - E (16 - 20 Years PPT); B - F (21 - 25 Years PPT)", q6: "≥ protection period", ruleType: "LIFE" },
+            { name: "Generali Supreme Gold", type: "Life", q1: "A", q2: "D", q3: "B - F", q6: "≥ protection period", ruleType: "LIFE" },
+            { name: "LionPainter Flexi", type: "Life", q1: "A, D", q2: "D", q3: "B - C (10 Years PPT); B - D (11 - 15 Years PPT); B - E (16 - 20 Years PPT); B - F (21 - 25 Years PPT)", q6: "≥ protection period", ruleType: "LIFE" },
             { name: "LionPromise Pro", type: "Life", q1: "A(Optional), C and/or D, E(iii)", q2: "A", q3: "F - G", q6: "A - F (2 Pay / 5 Pay)", ruleType: "LIFE" },
             { name: "LionPatron", type: "Life", q1: "A, D (Optional), E(iii)", q2: "A", q3: "B - G", q6: "A - F (5 Pay); B - F (10 Pay); D - F (20 Pay)", ruleType: "LIFE", multiplier: 1.5, fnaBaseMultiplier: 2.3 },
             // CI
-            { name: "LionGuardian PlusOne", type: "CI", q1: "A, B (iii)", q2: "C", q3: "B - G", q6: "≥ protection period", ruleType: "CI" },
+            { name: "LionGuardian PlusOne", type: "CI", q1: "A, B (iii)", q2: "D", q3: "B - G", q6: "≥ protection period", ruleType: "CI" },
             { name: "LionGuardian Beyond", type: "CI", q1: "A, B (iii), D (Optional), E (Optional) ** If D is selected, E must also be selected **", q2: "A", q3: "C - G", q6: "B - F (10 Pay); D - F (20 Pay); E - F (25 Pay); B (To age 65: age 55); C (To age 65: age 50 - 55 or To age 22: age 7 - 11); D (To age 65: age 45 - 55 or To age 22: age 2 - 11); E - F (To age 65: age 0 - 55 or To age 22: age 0 - 11)", ruleType: "CI", multiplier: 1.3 },
             { name: "LionAlong", type: "CI", q1: "A, B (iii), D (Optional), E (Optional) ** If D is selected, E must also be selected **", q2: "A", q3: "C - G", q6: "B - F (10 Pay); D - F (20 Pay); E - F (25 Pay)", ruleType: "CI" },
             // Annuity
             { name: "LionHarvest Prime", type: "Annuity", q1: "A(Optional), C and/or D", q2: "A", q3: "E - F", q6: "A - F (5 Pay); B - F (10 Pay)", ruleType: "GIO" }
             ,
             // [NEW] High Net Worth product
-            { name: "LionMaster", type: "HNW", q1: "A", q2: "C", q3: "B - G", q6: "≥ protection period", ruleType: "HNW" }
+            { name: "LionMaster", type: "HNW", q1: "A", q2: "D", q3: "B - G", q6: "≥ protection period", ruleType: "HNW" }
         ];
 
         const MED_RULE_CI = [
@@ -2655,30 +2655,34 @@ const HK_HOLIDAYS_2025_2026 = [
                     if (saUSD > 500000) {
                         reqs.push("Supplementary Form + Spouse/Parent's Cover Proof (Similar size)");
                     }
-                } else if (occupationStatus === 'Retiree' || occupationStatus === 'Unemployed') {
-                    if (saUSD > 500000) {
+                } else if (occupationStatus === 'Retiree') {
+                    if (saUSD > 300000 && saUSD <= 500000) {
                         reqs.push("FQ + Insurance Advisor's Report");
+                    }
+                } else if (occupationStatus === 'Unemployed') {
+                    if (saUSD > 100000) {
+                        reqs.push("FQ + Proof of financial info (Assets/Liabilities/Dependents etc.)");
                     }
                 }
             } else {
                 if (occupationStatus === 'Housewife' || occupationStatus === 'Juvenile' || occupationStatus === 'Student') {
-                    if (saUSD > 1000000) {
-                        reqs.push("IC + FQ on Insured & Spouse/Parent + Asset Proof & Income Proof of Spouse/Parent + Spouse/Parent Cover Proof");
+                    if (saUSD > 750000 && saUSD <= 1000000) {
+                        reqs.push("FQ on Insured & Spouse/Parent + Spouse/Parent Cover Proof (Similar size) + Asset Proof/Income Proof of Spouse/Parent");
                     } else if (saUSD > 500000) {
-                        reqs.push("FQ on Insured & Spouse/Parent + Asset Proof/Income Proof of Spouse/Parent + Spouse/Parent Cover Proof");
-                    } else if (saUSD > 350000) {
-                        reqs.push("Proof of Spouse/Parent Cover (Similar size)");
+                        reqs.push("Supplementary Form + Spouse/Parent's Cover Proof (Similar size)");
                     }
+                } else if (occupationStatus === 'Retiree') {
+                    if (saUSD > 300000) reqs.push("FQ + Proof of financial info (Assets/Liabilities/Dependents etc.)");
                 } else if (occupationStatus === 'Unemployed') {
                     if (saUSD > 100000) reqs.push("FQ + Proof of financial info (Assets/Liabilities/Dependents etc.)");
-                } else if (occupationStatus === 'Retiree') {
-                    if (saUSD > 200000) reqs.push("FQ + Proof of financial info (Assets/Liabilities/Dependents etc.)");
                 } else if (occupationStatus === 'Employed' || occupationStatus === 'SelfEmployed') {
                     let multiple = 0;
-                    if (age >= 18 && age <= 35) multiple = 30;
+                    if (age >= 18 && age <= 40) multiple = 30;
                     else if (age <= 50) multiple = 25;
+                    else if (age <= 55) multiple = 20;
                     else if (age <= 60) multiple = 15;
-                    else if (age <= 70) multiple = 10;
+                    else if (age <= 65) multiple = 10;
+                    else if (age <= 70) multiple = 5;
                     if (multiple > 0 && annualIncome > 0) {
                         // [UPDATE Req 2] Use FIN_USD_RATE (8.0) for income conversion
                         let incomeUSD = annualIncome / FIN_USD_RATE;
@@ -6352,10 +6356,12 @@ const shouldShowMed = () => {
                             else multiple = 5;
                         } else {
                             // LIFE products
-                            if (age >= 18 && age <= 35) multiple = 30;
+                            if (age >= 18 && age <= 40) multiple = 30;
                             else if (age <= 50) multiple = 25;
+                            else if (age <= 55) multiple = 20;
                             else if (age <= 60) multiple = 15;
-                            else if (age <= 70) multiple = 10;
+                            else if (age <= 65) multiple = 10;
+                            else if (age <= 70) multiple = 5;
                             else multiple = 0;
                         }
                     }
