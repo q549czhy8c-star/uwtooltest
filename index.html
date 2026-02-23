@@ -11,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Updated version title -->
     <title>UW assessment tool (v2.8.630)</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
+
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
@@ -26,20 +26,20 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
+
         /* 數字輸入框移除箭頭 */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; margin: 0; 
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none; margin: 0;
         }
-        
+
         /* 分頁切換動畫效果 */
         .tab-content { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .disabled-input {
             background-color: #f8fafc; color: #94a3b8;
             cursor: not-allowed;
@@ -2150,11 +2150,11 @@ function formatResidentLoadingRule(rule) {
             if (num === null || num === undefined || num === '') return '';
             const n = Number(num);
             const isInteger = Number.isInteger(n);
-            return new Intl.NumberFormat('en-HK', { 
-                style: 'currency', 
-                currency: currency, 
-                minimumFractionDigits: isInteger ? 0 : 2, 
-                maximumFractionDigits: 2 
+            return new Intl.NumberFormat('en-HK', {
+                style: 'currency',
+                currency: currency,
+                minimumFractionDigits: isInteger ? 0 : 2,
+                maximumFractionDigits: 2
             }).format(n);
         };
 
@@ -2237,9 +2237,9 @@ function formatResidentLoadingRule(rule) {
         };
 
 const HK_HOLIDAYS_2025_2026 = [
-            '2025-01-01', '2025-01-29', '2025-01-30', '2025-01-31', '2025-04-04', '2025-04-18', '2025-04-19', '2025-04-21', 
+            '2025-01-01', '2025-01-29', '2025-01-30', '2025-01-31', '2025-04-04', '2025-04-18', '2025-04-19', '2025-04-21',
             '2025-05-01', '2025-05-05', '2025-05-31', '2025-07-01', '2025-10-01', '2025-10-07', '2025-10-29', '2025-12-25', '2025-12-26',
-            '2026-01-01', '2026-02-17', '2026-02-18', '2026-02-19', '2026-04-03', '2026-04-04', '2026-04-06', '2026-04-07', 
+            '2026-01-01', '2026-02-17', '2026-02-18', '2026-02-19', '2026-04-03', '2026-04-04', '2026-04-06', '2026-04-07',
             '2026-05-01', '2026-05-25', '2026-06-19', '2026-07-01', '2026-09-26', '2026-10-01', '2026-10-19', '2026-12-25', '2026-12-26'
         ];
 
@@ -2556,11 +2556,11 @@ const HK_HOLIDAYS_2025_2026 = [
             if (!planName || !sa) return null;
             const product = PRODUCT_DB.find(p => p.name === planName);
             if (!product || !product.ruleType) return null;
-            
+
             // [UPDATE Req 2] Use FIN_USD_RATE (8.0) for exchange if HKD
             const rate = product.ruleType === 'CI' ? MED_CHECK_RATE : FIN_USD_RATE;
             let saUSD = currency === 'HKD' ? sa / rate : sa;
-            
+
             if (product.ruleType === 'GIO') {
                 if (saUSD > 2500000) {
                     return { req: "Exceeds GIO limit, SUW is required", checkSA_USD: saUSD, ruleType: "GIO" };
@@ -2583,7 +2583,7 @@ const HK_HOLIDAYS_2025_2026 = [
                 else if (age <= 60) colIdx = 3;
                 else if (age <= 65) colIdx = 4;
                 else if (age <= 70) colIdx = 5;
-                if (colIdx === -1) return { req: "Age > 70: IC", checkSA_USD: checkSA, ruleType: product.ruleType }; 
+                if (colIdx === -1) return { req: "Age > 70: IC", checkSA_USD: checkSA, ruleType: product.ruleType };
 
                 for (const tier of MED_RULE_CI) {
                     if (checkSA <= tier.maxUSD) {
@@ -2641,7 +2641,7 @@ const HK_HOLIDAYS_2025_2026 = [
 
             // [UPDATE Req 2] Use FIN_USD_RATE (8.0) for exchange if HKD
             let saUSD = currency === 'HKD' ? sa / FIN_USD_RATE : sa;
-            
+
             let reqs = [];
             let maxCapMsg = "";
             if (product.ruleType === 'CI') {
@@ -2728,7 +2728,7 @@ const HK_HOLIDAYS_2025_2026 = [
         const TextSplitterTab = () => {
             const [lineLength, setLineLength] = useState(40);
             const [rowLimit, setRowLimit] = useState(12);
-            const [firstColRowLimit, setFirstColRowLimit] = useState(""); 
+            const [firstColRowLimit, setFirstColRowLimit] = useState("");
             const [removeNumbering, setRemoveNumbering] = useState(true);
             const [bulkTextA, setBulkTextA] = useState('');
             const [rows, setRows] = useState([
@@ -2849,7 +2849,7 @@ const HK_HOLIDAYS_2025_2026 = [
                             currentRow++;
                         });
                     });
-                    
+
                     if (paragraphs.length === 0 && refText.trim()) {
                          let currentLimit = rowLimit;
                          if (currentColumnBlock === 1 && firstColRowLimit && Number(firstColRowLimit) > 0) {
@@ -3008,11 +3008,11 @@ const HK_HOLIDAYS_2025_2026 = [
         // ==========================================
         const OccupationTab = () => {
             const [searchTerm, setSearchTerm] = useState('');
-            
+
             const filteredData = useMemo(() => {
                 if (!searchTerm.trim()) return OCCUPATION_DB;
                 const lower = searchTerm.toLowerCase();
-                return OCCUPATION_DB.filter(item => 
+                return OCCUPATION_DB.filter(item =>
                     (item.title && item.title.toLowerCase().includes(lower)) ||
                     (item.titleEn && item.titleEn.toLowerCase().includes(lower)) ||
                     (item.industry && item.industry.toLowerCase().includes(lower))
@@ -3027,9 +3027,9 @@ const HK_HOLIDAYS_2025_2026 = [
                             <h2 className="text-lg font-bold text-slate-800">Occupation Rating Manual</h2>
                         </div>
                         <div className="relative w-64">
-                            <input 
-                                type="text" 
-                                placeholder="Search Job Title / Industry..." 
+                            <input
+                                type="text"
+                                placeholder="Search Job Title / Industry..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-9 pr-3 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-blue-500 outline-none"
@@ -3037,7 +3037,7 @@ const HK_HOLIDAYS_2025_2026 = [
                             <Search className="absolute left-2.5 top-2 text-slate-400" size={16} />
                         </div>
                     </div>
-                    
+
                     <div className="flex-1 overflow-auto p-6 custom-scrollbar">
                         <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
                             <table className="w-full text-sm text-left">
@@ -3086,8 +3086,8 @@ const HK_HOLIDAYS_2025_2026 = [
         const AffordabilityTab = () => {
             const [age, setAge] = useState(18);
             const [retireAge, setRetireAge] = useState(70);
-            const [calcMode, setCalcMode] = useState('both'); 
-            const [monthlyIncome, setMonthlyIncome] = useState(4166); 
+            const [calcMode, setCalcMode] = useState('both');
+            const [monthlyIncome, setMonthlyIncome] = useState(4166);
             const [incomePercent, setIncomePercent] = useState(100);
             const [liquidAsset, setLiquidAsset] = useState(860000);
             const [assetPercent, setAssetPercent] = useState(100);
@@ -3360,7 +3360,7 @@ const HK_HOLIDAYS_2025_2026 = [
                     if (data.pfLoanTenor) setPfLoanTenor(Number(data.pfLoanTenor));
                     // [UPDATE v2.8] Copy PF repayment amount
                     if (data.pfRepaymentAmount !== undefined) setPfRepaymentAmount(Number(data.pfRepaymentAmount));
-                    
+
                     const applyingPolicyIndex = policies.findIndex(p => p.status === 'Applying');
                     if (applyingPolicyIndex >= 0) {
                         const newPolicies = [...policies];
@@ -3398,11 +3398,11 @@ const HK_HOLIDAYS_2025_2026 = [
                         annPrem = annPrem * factor2;
                         // Determine payType for the new policy; Prepay maps to Regular Pay
                         const newPayType = (data.payMode === 'Single') ? 'Single' : 'Regular';
-                        setPolicies([...policies, { 
-                            id: newId, 
-                            name: 'Current Application', 
-                            status: 'Applying', 
-                            premium: annPrem, 
+                        setPolicies([...policies, {
+                            id: newId,
+                            name: 'Current Application',
+                            status: 'Applying',
+                            premium: annPrem,
                             currency: data.currency ? data.currency : 'USD',
                             term: data.term ? Number(data.term) : 1,
                             payType: newPayType
@@ -3412,7 +3412,7 @@ const HK_HOLIDAYS_2025_2026 = [
                     console.error('Error parsing copied data', err);
                 }
             };
-            
+
             const handleResetAffordability = () => {
                 setAge(18);
                 setRetireAge(70);
@@ -3498,7 +3498,7 @@ const HK_HOLIDAYS_2025_2026 = [
                                 <input type="number" value={retireAge} onChange={(e) =>setRetireAge(Number(e.target.value))} className="w-full border rounded p-1 font-bold text-sm"/>
                                 <div className="text-[10px] text-blue-600 mt-1">距離退休: {yearsToRetire} 年</div>
                             </div>
-                            
+
                             <div className={`col-span-1 border-l pl-4 border-slate-100 transition-opacity ${calcMode === 'asset' ? 'disabled-input opacity-50' : ''}`}>
                                 <label className="block text-xs font-bold text-slate-500 uppercase flex justify-between">
                                     <span>可支配月收入</span>
@@ -3668,9 +3668,9 @@ const HK_HOLIDAYS_2025_2026 = [
                                             </span>
                                             <span className="font-bold text-lg text-slate-800">{formatMoney(calculationResult.grossTotalDisplay)}</span>
                                         </div>
-                                        
+
                                         <div className="h-px bg-slate-100 my-1"></div>
-                                        
+
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-slate-500">
                                                 {calcMode === 'income' ? '收入/資產不足總額 (Total Shortfall):' : '資產負擔總需求 (Asset Required):'}
@@ -3689,7 +3689,7 @@ const HK_HOLIDAYS_2025_2026 = [
                                             <span className="text-slate-500">有效淨流動資產 (Effective Net Assets):</span>
                                             <span className="font-bold text-lg text-green-600">{formatMoney(calculationResult.effectiveAssets)}</span>
                                         </div>
-                                        
+
                                         <div className="h-px bg-slate-200 my-2"></div>
                                         {!isPremiumFinancing && (
                                             <div className="flex justify-between items-center">
@@ -3736,7 +3736,7 @@ const HK_HOLIDAYS_2025_2026 = [
                                                 Premium Affordability Checking
                                             </div>
                                             <div className="text-xs text-slate-400 mt-2 text-center">
-                                                {calcMode === 'income' 
+                                                {calcMode === 'income'
                                                     ? (calculationResult.isPass ? '收入及退休資產足以支付保費' : '收入或退休資產不足以支付')
                                                     : (calculationResult.isPass ? '有效資產足以支付預期保費總額' : '有效資產不足以支付，請調整保費')
                                                 }
@@ -3783,12 +3783,12 @@ const [addressProofType, setAddressProofType] = useState('');
             const [insSmoker, setInsSmoker] = useState("N");
             const [insResidency, setInsResidency] = useState("HK");
             const [planName, setPlanName] = useState("");
-            const [prodType, setProdType] = useState(""); 
+            const [prodType, setProdType] = useState("");
             const [sumAssured, setSumAssured] = useState("");
             const [curr, setCurr] = useState("USD");
             const [payMode, setPayMode] = useState("Annual");
             const [premAmount, setPremAmount] = useState("");
-            const [occupationStatus, setOccupationStatus] = useState("Employed"); 
+            const [occupationStatus, setOccupationStatus] = useState("Employed");
             const [employer, setEmployer] = useState("");
             const [location, setLocation] = useState("");
             const [lifeCiEmployerToggle, setLifeCiEmployerToggle] = useState(false); // v2.2 optional employer/work fields for Life/CI
@@ -4464,7 +4464,7 @@ ${hnwFinancially || ''}`;
                 // UNLESS it is Trust OR High Risk.
                 if (prodType === 'Life' || prodType === 'CI') {
                     if (appType === 'Trust' || isHighRisk || isEverestBroker || lifeCiEmployerToggle) return true;
-                    return false; 
+                    return false;
                 }
                 // For other products (GIO/Annuity), assume required/standard behavior (kept visible)
                 return true;
@@ -4576,20 +4576,20 @@ ${hnwFinancially || ''}`;
 
             const fnaRangeInfo = useMemo(() => {
                 if (!sumAssured || !prodType) return null;
-                if (prodType !== 'Life' && prodType !== 'CI') return null; 
-                
+                if (prodType !== 'Life' && prodType !== 'CI') return null;
+
                 let saHKD = Number(sumAssured);
-                if (curr === 'USD') saHKD = saHKD * USD_RATE; 
+                if (curr === 'USD') saHKD = saHKD * USD_RATE;
 
                 let baseSA = saHKD;
                 if (planName === "LionPatron") {
                     baseSA = saHKD * 2.3;
                 }
 
-                const minTarget = baseSA / 1.2; 
-                const maxTarget = baseSA * 2.0; 
+                const minTarget = baseSA / 1.2;
+                const maxTarget = baseSA * 2.0;
                 const rangeMsg = `💡 參考資訊：合理目標保障範圍應為 ${formatMoney(minTarget)} - ${formatMoney(maxTarget)}`;
-                
+
                 let status = null;
                 let msg = "";
                 if (targetSavingHKD) {
@@ -4669,7 +4669,7 @@ ${hnwFinancially || ''}`;
                 const annualIncome = monthlyIncome ? Number(monthlyIncome) * 12 : 0;
                 const isValidAge = !(checkAge === '' || checkAge === null || checkAge === undefined || Number.isNaN(Number(checkAge)));
                 if (!isValidAge || !sumAssured) return null;
-                
+
                 const baseSA = Number(sumAssured) || 0;
                 let otherSum = 0;
                 if ((prodType === 'Life' || prodType === 'CI') && otherInsurances && otherInsurances.length) {
@@ -4709,7 +4709,7 @@ ${hnwFinancially || ''}`;
                 if (signingDate) datesToCheck.push({ label: '簽署日期', date: new Date(signingDate) });
                 if (applicationSigningDate) datesToCheck.push({ label: '申請書簽署日期', date: new Date(applicationSigningDate) });
                 if (fnaSigningDate) datesToCheck.push({ label: '財務需求分析簽署日期', date: new Date(fnaSigningDate) });
-                
+
                 if (appType !== 'Trust' && phResidency !== 'HK' && phArrivalDate && phExpiryDate) {
                     const arr = new Date(phArrivalDate);
                     const exp = new Date(phExpiryDate);
@@ -5059,7 +5059,7 @@ ${hnwFinancially || ''}`;
                                                     }
                                                 </div>
                                             )}
-                                            
+
                                             {(['Life','CI','Annuity'].includes(prodType)) && (riskLevel || residentLoadingText) && (
                                                 <div className="flex flex-wrap gap-2 items-center mt-2">
                                                     {riskLevel && <span className={`text-xs font-bold px-2 py-1 rounded whitespace-nowrap ${riskLevel==='High'||riskLevel==='Sanctioned'?'bg-red-100 text-red-700':riskLevel==='Medium'?'bg-blue-100 text-blue-700':'bg-green-100 text-green-700'}`}>{riskLevel} Risk</span>}
@@ -5109,8 +5109,8 @@ ${hnwFinancially || ''}`;
                                         </div>
                                     )}
                                 </div>
-                                
-                                
+
+
                                 {appType === 'Trust' && (
                                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                                         <div className="text-sm font-bold text-slate-700 uppercase tracking-wide border-l-4 border-blue-500 pl-2 mb-2">Trust Beneficiary</div>
@@ -5382,9 +5382,6 @@ ${hnwFinancially || ''}`;
                                         </div>
                                     )}
                                 </div>
-                            </div>
-                            
-                            <div className="space-y-6">
                                 <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                                     <div className="text-sm font-bold text-slate-700 uppercase tracking-wide border-l-4 border-blue-500 pl-2 mb-2">Financial Questionnaire</div>
                                     <div className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded">
@@ -5463,6 +5460,9 @@ ${hnwFinancially || ''}`;
                                         )}
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="space-y-6">
                                 <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                                     <div className="text-sm font-bold text-slate-700 uppercase tracking-wide border-l-4 border-blue-500 pl-2 mb-2">申請書資料</div>
                                     <div className="space-y-3">
@@ -5488,7 +5488,7 @@ ${hnwFinancially || ''}`;
                                                 )}
                                             </div>
                                         )}
-                                        
+
                                         <div>
                                             <label className="text-xs font-bold text-slate-500">{(prodType === "Life" || prodType === "CI") ? "受保人的職業身分" : "職業身分"}</label>
                                             <select value={occupationStatus} onChange={(e) =>setOccupationStatus(e.target.value)} className="w-full border rounded p-1.5 text-sm bg-slate-50 font-medium">
@@ -6295,7 +6295,7 @@ const showMed = (isPHNotSame && !isLifeOrCI)
 
                 // [BUGFIX] Age = 0 should still be displayed in Case Summary (0 is falsy in JS)
                 const ageStr = (age === '' || age === null || age === undefined || Number.isNaN(age)) ? '' : String(age);
-                
+
                 const gender = genderCode === 'M' ? 'M' : 'F';
                 const smoker = smokerCode === 'Y' ? 'Smoker' : 'Non-Smoker';
                 return `${ageStr} / ${gender} / ${smoker}`;
@@ -6891,7 +6891,7 @@ const shouldShowMed = () => {
                 const majorCn = cMajorCn || cMinorCn || '';
                 const minorCn = cMinorCn || cMajorCn || '';
                 const items = [];
-                let majorEngLine = metastasis ? 
+                let majorEngLine = metastasis ?
                     `Critical Illness Benefit for Major Critical Illness will not be payable if the loss or claim is directly or indirectly due to Cancer of ${majorEn}, its treatment, metastasis and complications.` :
                     `Critical Illness Benefit for Major Critical Illness will not be payable if the loss or claim is directly or indirectly due to cancer of ${majorEn} and its complications.`;
                 items.push({ prefix: '@@@E', messages: [majorEngLine] });
@@ -7163,7 +7163,7 @@ const shouldShowMed = () => {
             );
         };
 
-        
+
         /* ========= Versioning & Update Log ========= */
         // Updated version constant to reflect latest enhancements
         const CURRENT_VERSION = "v2.8.630";
@@ -7559,7 +7559,7 @@ const App = () => {
             // this state is set to show a temporary notification.
             const [toast, setToast] = useState({ show: false, message: '' });
 
-            
+
             const [isUpdateLogOpen, setIsUpdateLogOpen] = useState(false);
             const [isSaveCaseOpen, setIsSaveCaseOpen] = useState(false);
             const [isLoadCaseOpen, setIsLoadCaseOpen] = useState(false);
@@ -7885,7 +7885,7 @@ const App = () => {
                         </div>
                     )}
 
-                    
+
 
                     {/* Export Options Modal (Hybrid Mode) */}
                     {isExportOptionsOpen && (
