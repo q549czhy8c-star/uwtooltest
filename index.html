@@ -5531,6 +5531,84 @@ ${hnwFinancially || ''}`;
                                     </div>
                                 </div>
                                 <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                    <div className="text-sm font-bold text-slate-700 uppercase tracking-wide border-l-4 border-blue-500 pl-2 mb-2">Financial Questionnaire</div>
+                                    <div className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded">
+                                        <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                                            <input
+                                                type="checkbox"
+                                                checked={showFinancialQuestionnaire}
+                                                onChange={(e) => setShowFinancialQuestionnaire(e.target.checked)}
+                                                className="rounded text-blue-600"
+                                            />
+                                            Financial Questionnaire
+                                        </label>
+
+                                        {showFinancialQuestionnaire && (
+                                            <div className="mt-3 space-y-4">
+                                                <div className="flex items-center justify-between gap-3">
+                                                    <div className="text-xs text-slate-500 font-bold">All amount in HKD</div>
+                                                    <button onClick={copyFinancialQuestionnaire} className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1"><Copy size={12}/> Copy FQ</button>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-500">1. Purpose of Insurance</label>
+                                                        <MultiSelect options={FQ_PURPOSE_OPTIONS} value={fqPurposeOfInsurance} onChange={setFqPurposeOfInsurance} placeholder="Please select" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-500">2. Source of premium</label>
+                                                        <MultiSelect options={FQ_SOURCE_OF_PREMIUM_OPTIONS} value={fqSourceOfPremium} onChange={setFqSourceOfPremium} placeholder="Please select" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                    <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
+                                                        <div className="text-xs font-bold text-slate-700">3(a). Earned Annual Income (HKD)</div>
+                                                        <div><label className="text-[11px] text-slate-500">Salary</label><input type="number" value={fqEarnedIncome.salary} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'salary', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Bonuses/Dividends</label><input type="number" value={fqEarnedIncome.bonusesDividends} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'bonusesDividends', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Fringe Benefit</label><input type="number" value={fqEarnedIncome.fringeBenefit} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'fringeBenefit', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqEarnedIncome.others} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div className="text-[11px] font-bold text-blue-700">Total: HKD {formatAmount(earnedAnnualIncomeTotal)}</div>
+                                                    </div>
+                                                    <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
+                                                        <div className="text-xs font-bold text-slate-700">3(b). Unearned Annual Income (HKD)</div>
+                                                        <div><label className="text-[11px] text-slate-500">Rental Income</label><input type="number" value={fqUnearnedIncome.rentalIncome} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'rentalIncome', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Interest from Bank Deposit</label><input type="number" value={fqUnearnedIncome.bankInterest} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'bankInterest', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Investment Earnings</label><input type="number" value={fqUnearnedIncome.investmentEarnings} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'investmentEarnings', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqUnearnedIncome.others} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div className="text-[11px] font-bold text-blue-700">Total: HKD {formatAmount(unearnedAnnualIncomeTotal)}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="text-xs font-bold text-blue-700">Total Annual Income: HKD {formatAmount(totalAnnualIncome)}</div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                    <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
+                                                        <div className="text-xs font-bold text-slate-700">4(a). Assets (HKD)</div>
+                                                        <div><label className="text-[11px] text-slate-500">Cash</label><input type="number" value={fqAssets.cash} onChange={(e) => updateFqAmount(setFqAssets, 'cash', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Real Estate</label><input type="number" value={fqAssets.realEstate} onChange={(e) => updateFqAmount(setFqAssets, 'realEstate', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Stocks/Bonds</label><input type="number" value={fqAssets.stocksBonds} onChange={(e) => updateFqAmount(setFqAssets, 'stocksBonds', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Business Interest</label><input type="number" value={fqAssets.businessInterest} onChange={(e) => updateFqAmount(setFqAssets, 'businessInterest', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">High Valuables</label><input type="number" value={fqAssets.highValuables} onChange={(e) => updateFqAmount(setFqAssets, 'highValuables', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqAssets.others} onChange={(e) => updateFqAmount(setFqAssets, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div className="text-[11px] font-bold text-blue-700">Total Assets: HKD {formatAmount(totalAssets)}</div>
+                                                    </div>
+                                                    <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
+                                                        <div className="text-xs font-bold text-slate-700">4(b). Liabilities (HKD)</div>
+                                                        <div><label className="text-[11px] text-slate-500">Mortgages</label><input type="number" value={fqLiabilities.mortgages} onChange={(e) => updateFqAmount(setFqLiabilities, 'mortgages', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Business Loans</label><input type="number" value={fqLiabilities.businessLoans} onChange={(e) => updateFqAmount(setFqLiabilities, 'businessLoans', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Banking Facilities</label><input type="number" value={fqLiabilities.bankingFacilities} onChange={(e) => updateFqAmount(setFqLiabilities, 'bankingFacilities', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Loan Guarantees</label><input type="number" value={fqLiabilities.loanGuarantees} onChange={(e) => updateFqAmount(setFqLiabilities, 'loanGuarantees', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqLiabilities.others} onChange={(e) => updateFqAmount(setFqLiabilities, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
+                                                        <div className="text-[11px] font-bold text-blue-700">Total Liabilities: HKD {formatAmount(totalLiabilities)}</div>
+                                                        <div className="text-[11px] font-bold text-blue-700">Net Worth: HKD {formatAmount(netWorth)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                                     <div className="flex justify-between items-center mb-2">
                                         <div className="text-sm font-bold text-slate-700 uppercase tracking-wide border-l-4 border-blue-500 pl-2">財務需求分析 (FNA)</div>
                                         <button onClick={() => onNavigate('affordability')} className="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center gap-1 shadow-sm"><Calculator size={12}/> 計算負擔能力</button>
@@ -5609,81 +5687,6 @@ ${hnwFinancially || ''}`;
                                                 </div>
                                             )}
 
-                                            <div className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded">
-                                                <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={showFinancialQuestionnaire}
-                                                        onChange={(e) => setShowFinancialQuestionnaire(e.target.checked)}
-                                                        className="rounded text-blue-600"
-                                                    />
-                                                    Financial Questionnaire
-                                                </label>
-
-                                                {showFinancialQuestionnaire && (
-                                                    <div className="mt-3 space-y-4">
-                                                        <div className="flex items-center justify-between gap-3">
-                                                            <div className="text-xs text-slate-500 font-bold">All amount in HKD</div>
-                                                            <button onClick={copyFinancialQuestionnaire} className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1"><Copy size={12}/> Copy FQ</button>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                            <div>
-                                                                <label className="text-xs font-bold text-slate-500">1. Purpose of Insurance</label>
-                                                                <MultiSelect options={FQ_PURPOSE_OPTIONS} value={fqPurposeOfInsurance} onChange={setFqPurposeOfInsurance} placeholder="Please select" />
-                                                            </div>
-                                                            <div>
-                                                                <label className="text-xs font-bold text-slate-500">2. Source of premium</label>
-                                                                <MultiSelect options={FQ_SOURCE_OF_PREMIUM_OPTIONS} value={fqSourceOfPremium} onChange={setFqSourceOfPremium} placeholder="Please select" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                            <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
-                                                                <div className="text-xs font-bold text-slate-700">3(a). Earned Annual Income (HKD)</div>
-                                                                <div><label className="text-[11px] text-slate-500">Salary</label><input type="number" value={fqEarnedIncome.salary} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'salary', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Bonuses/Dividends</label><input type="number" value={fqEarnedIncome.bonusesDividends} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'bonusesDividends', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Fringe Benefit</label><input type="number" value={fqEarnedIncome.fringeBenefit} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'fringeBenefit', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqEarnedIncome.others} onChange={(e) => updateFqAmount(setFqEarnedIncome, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div className="text-[11px] font-bold text-blue-700">Total: HKD {formatAmount(earnedAnnualIncomeTotal)}</div>
-                                                            </div>
-                                                            <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
-                                                                <div className="text-xs font-bold text-slate-700">3(b). Unearned Annual Income (HKD)</div>
-                                                                <div><label className="text-[11px] text-slate-500">Rental Income</label><input type="number" value={fqUnearnedIncome.rentalIncome} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'rentalIncome', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Interest from Bank Deposit</label><input type="number" value={fqUnearnedIncome.bankInterest} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'bankInterest', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Investment Earnings</label><input type="number" value={fqUnearnedIncome.investmentEarnings} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'investmentEarnings', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqUnearnedIncome.others} onChange={(e) => updateFqAmount(setFqUnearnedIncome, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div className="text-[11px] font-bold text-blue-700">Total: HKD {formatAmount(unearnedAnnualIncomeTotal)}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="text-xs font-bold text-blue-700">Total Annual Income: HKD {formatAmount(totalAnnualIncome)}</div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                                            <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
-                                                                <div className="text-xs font-bold text-slate-700">4(a). Assets (HKD)</div>
-                                                                <div><label className="text-[11px] text-slate-500">Cash</label><input type="number" value={fqAssets.cash} onChange={(e) => updateFqAmount(setFqAssets, 'cash', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Real Estate</label><input type="number" value={fqAssets.realEstate} onChange={(e) => updateFqAmount(setFqAssets, 'realEstate', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Stocks/Bonds</label><input type="number" value={fqAssets.stocksBonds} onChange={(e) => updateFqAmount(setFqAssets, 'stocksBonds', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Business Interest</label><input type="number" value={fqAssets.businessInterest} onChange={(e) => updateFqAmount(setFqAssets, 'businessInterest', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">High Valuables</label><input type="number" value={fqAssets.highValuables} onChange={(e) => updateFqAmount(setFqAssets, 'highValuables', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqAssets.others} onChange={(e) => updateFqAmount(setFqAssets, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div className="text-[11px] font-bold text-blue-700">Total Assets: HKD {formatAmount(totalAssets)}</div>
-                                                            </div>
-                                                            <div className="p-3 border border-slate-200 rounded bg-white space-y-2">
-                                                                <div className="text-xs font-bold text-slate-700">4(b). Liabilities (HKD)</div>
-                                                                <div><label className="text-[11px] text-slate-500">Mortgages</label><input type="number" value={fqLiabilities.mortgages} onChange={(e) => updateFqAmount(setFqLiabilities, 'mortgages', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Business Loans</label><input type="number" value={fqLiabilities.businessLoans} onChange={(e) => updateFqAmount(setFqLiabilities, 'businessLoans', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Banking Facilities</label><input type="number" value={fqLiabilities.bankingFacilities} onChange={(e) => updateFqAmount(setFqLiabilities, 'bankingFacilities', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Loan Guarantees</label><input type="number" value={fqLiabilities.loanGuarantees} onChange={(e) => updateFqAmount(setFqLiabilities, 'loanGuarantees', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div><label className="text-[11px] text-slate-500">Others</label><input type="number" value={fqLiabilities.others} onChange={(e) => updateFqAmount(setFqLiabilities, 'others', e.target.value)} className="w-full border rounded p-1.5 text-sm"/></div>
-                                                                <div className="text-[11px] font-bold text-blue-700">Total Liabilities: HKD {formatAmount(totalLiabilities)}</div>
-                                                                <div className="text-[11px] font-bold text-blue-700">Net Worth: HKD {formatAmount(netWorth)}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
                                         </div>
                                     </>
                                     )}
