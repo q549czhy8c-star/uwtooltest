@@ -4185,8 +4185,11 @@ const [fnaP3Q6, setFnaP3Q6] = useState("");   // single-select (A - G)
             const assetsExcludingCash = totalAssets - toAmount(fqAssets.cash);
 
             const copyFinancialQuestionnaire = () => {
+                const normalizedFqPurpose = fqPurposeOfInsurance.map((purpose) =>
+                    purpose.replace(/^(Personal|Business)\s*-\s*/i, '')
+                );
                 const text = [
-                    `Purpose of Insurance: ${fqPurposeOfInsurance.length ? fqPurposeOfInsurance.join(', ') : '-'}`,
+                    `Purpose of Insurance: ${normalizedFqPurpose.length ? normalizedFqPurpose.join(', ') : '-'}`,
                     `Source of premium: ${fqSourceOfPremium.length ? fqSourceOfPremium.join(', ') : '-'}`,
                     `Earned Annual Income: HKD ${formatAmount(earnedAnnualIncomeTotal)}`,
                     `Unearned Annual Income: HKD ${formatAmount(unearnedAnnualIncomeTotal)}`,
